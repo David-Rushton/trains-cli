@@ -21,7 +21,7 @@ namespace Dr.TrainsCli.Commands
                 return;
             }
 
-            // TODO: Show hel
+            // TODO: Show help
             throw new Exception($"Config option(s) not supported: {string.Join(", ", args)}");
         }
 

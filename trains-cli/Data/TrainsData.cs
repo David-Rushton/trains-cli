@@ -39,7 +39,7 @@ namespace Dr.TrainsCli.Data
             return await JsonSerializer.DeserializeAsync<StationMessage>(responseSteam);
         }
 
-        public async Task<StationMessage> GetDepartures(string fromStationCode, string toStationCode)
+        public async Task<DeparturesMessage> GetDepartures(string fromStationCode, string toStationCode)
         {
             // train/station/{ *** station_code *** }/live.json    *** FST ***
             // calling_at=SOE
@@ -47,10 +47,9 @@ namespace Dr.TrainsCli.Data
 
             var searchTerms = new string[]
             {
-                "type=train_station",
-                $"query={fromStationCode}"
+                $"calling_at={toStationCode}"
             };
-            return await GetRestRequest<StationMessage>("places.json", searchTerms);
+            return await GetRestRequest<DeparturesMessage>($"train/station/{fromStationCode}/live.json", searchTerms);
         }
 
 
