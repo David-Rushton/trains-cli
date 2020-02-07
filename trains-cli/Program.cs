@@ -4,13 +4,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using trains_cli.Commands;
-using trains_cli.Configuration;
-using trains_cli.Data;
-using trains_cli.Extensions;
+using Dr.TrainsCli.Commands;
+using Dr.TrainsCli.Configuration;
+using Dr.TrainsCli.Data;
+using Dr.TrainsCli.Extensions;
 
 
-namespace trains_cli
+namespace Dr.TrainsCli
 {
     class Program
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 
-namespace trains_cli.Data
+namespace Dr.TrainsCli.Data
 {
     public class DeparturesMessage
     {

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 
 
-namespace trains_cli.Commands
+namespace Dr.TrainsCli.Commands
 {
     public class FindCommand : Command
     {

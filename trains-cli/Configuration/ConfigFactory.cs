@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 
-namespace trains_cli.Configuration
+namespace Dr.TrainsCli.Configuration
 {
     internal class ConfigFactory
     {

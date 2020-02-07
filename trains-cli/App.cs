@@ -6,12 +6,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using trains_cli.Commands;
-using trains_cli.Configuration;
-using trains_cli.Data;
+using Dr.TrainsCli.Commands;
+using Dr.TrainsCli.Configuration;
+using Dr.TrainsCli.Data;
 
 
-namespace trains_cli
+namespace Dr.TrainsCli
 {
     public class App
     {

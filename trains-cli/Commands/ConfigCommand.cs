@@ -1,10 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using trains_cli.Extensions;
+using Dr.TrainsCli.Extensions;
 
 
-namespace trains_cli.Commands
+namespace Dr.TrainsCli.Commands
 {
     public class ConfigCommand : Command
     {

@@ -6,10 +6,13 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
-namespace trains_cli.Configuration
+namespace Dr.TrainsCli.Configuration
 {
     public class Config
     {
+        [JsonIgnore]
+        public string? ConfigFilePath { get; set; }
+
         [JsonPropertyName("appId")]
         public string? AppId { get; set; }
 

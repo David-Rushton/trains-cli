@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace trains_cli.Extensions
+namespace Dr.TrainsCli.Extensions
 {
     public static class StringArrayExtensions
     {
