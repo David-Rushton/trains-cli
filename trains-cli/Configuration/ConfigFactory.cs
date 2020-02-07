@@ -55,7 +55,9 @@ namespace Dr.TrainsCli.Configuration
             {
                 using(FileStream fs = File.OpenRead(ConfigFilePath))
                 {
-                    return await JsonSerializer.DeserializeAsync<Config>(fs);
+                    var returnValue = await JsonSerializer.DeserializeAsync<Config>(fs);
+                    returnValue.ConfigFilePath = ConfigFilePath;
+                    return returnValue;
                 }
             }
         }

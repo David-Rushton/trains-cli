@@ -30,10 +30,9 @@ namespace Dr.TrainsCli
 
         private static async Task<App> bootstrap()
         {
-            var configPath = ConfigFactory.ConfigFilePath;
             var config = await ConfigFactory.GetConfigAsync();
             var trainsData = new TrainsData(config);
-            var app = new App(config, configPath, trainsData);
+            var app = new App(config, trainsData);
 
             app.RegisterCommand(new ConfigCommand());
             app.RegisterCommand(new FindCommand());

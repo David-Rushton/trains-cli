@@ -17,7 +17,7 @@ namespace Dr.TrainsCli.Commands
         {
             if(args.ContainsOption("--edit", "-e"))
             {
-                await Task.Run(() => EditConfigFie(app.ConfigFilePath));
+                await Task.Run(() => EditConfigFie(app.Config?.ConfigFilePath ?? Configuration.ConfigFactory.ConfigFilePath));
                 return;
             }
 

@@ -18,20 +18,16 @@ namespace Dr.TrainsCli
         readonly Dictionary<string, Command> _commands = new Dictionary<string, Command>();
 
 
-        internal App(Config config, string configFilePath, TrainsData trainsData)
+        internal App(Config config, TrainsData trainsData)
         {
             Config = config;
-            ConfigFilePath = configFilePath;
             TrainsData = trainsData;
-            // Initialise();
         }
 
 
         public TrainsData TrainsData { get; internal set; }
 
         public Config Config { get; internal set; }
-
-        public string ConfigFilePath { get; internal set; }
 
 
         public void RegisterCommand(Command command)
