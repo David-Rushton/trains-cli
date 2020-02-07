@@ -13,8 +13,14 @@ namespace Dr.TrainsCli.Commands
 
         public async override Task ExecuteAsync(App app, string[] args)
         {
-            var departures =  await app.TrainsData.GetDepartures("FST", "SOE");
-            Console.WriteLine(departures);
+            if(args.Length == 2)
+            {
+                var departures =  await app.TrainsData.GetDepartures(args[0], args[1]);
+                Console.WriteLine(departures);
+                return;
+            }
+
+            throw new Exception("Usage: trains-cli live staton1 station2");
         }
     }
 }
