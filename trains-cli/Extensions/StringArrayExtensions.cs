@@ -5,9 +5,8 @@ namespace trains_cli.Extensions
 {
     public static class StringArrayExtensions
     {
-        public static bool TryGetOptionValue(this string[] str, string optionName, string optionAlias, out string value)
+        public static bool TryGetOptionValue(this string[] str, string optionName, string optionAlias, out string? value, string? defaultValue)
         {
-            string defaultReturn = null;
             var idx = Array.FindIndex(str, s => s == optionName || s == optionAlias) + 1;
 
             if(idx > 0 && idx < str.Length)
@@ -16,17 +15,17 @@ namespace trains_cli.Extensions
                 return true;
             }
 
-            value = defaultReturn;
+            value = defaultValue;
             return false;
         }
 
         public static bool ContainsCommand(this string[] str, string commandName)
             => ContainsOption(str, commandName, null);
 
-        public static bool ContainsOption(this string[] str, string optionName, string optionAlias)
+        public static bool ContainsOption(this string[] str, string optionName, string? optionAlias)
         {
-            var idx = Array.FindIndex(str, s => s == optionName || s == optionAlias);
-            return (idx > 0);
+            var idx = Array.FindIndex(str, s => s.ToLower() == optionName.ToLower() || s.ToLower() == optionAlias!.ToLower());
+            return (idx >= 0);
         }
     }
 }
