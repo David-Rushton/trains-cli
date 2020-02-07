@@ -13,7 +13,6 @@ namespace Dr.TrainsCli.Commands
 
         public async override Task ExecuteAsync(App app, string[] args)
         {
-            Console.WriteLine("Getting departures...");
             var departures =  await app.TrainsData.GetDepartures("FST", "SOE");
             Console.WriteLine(departures);
         }
