@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Commands;
 using Dr.TrainsCli.Configuration;
@@ -40,10 +41,6 @@ namespace Dr.TrainsCli
 
         public async Task ExecuteAsync(string[] args)
         {
-
-            Console.WriteLine("What do we have...?");
-            Console.WriteLine(string.Join(" : ", args));
-
             if(args.Length == 0)
             {
                 // show usage
@@ -52,7 +49,6 @@ namespace Dr.TrainsCli
 
             if(_commands.TryGetValue(args[0].ToLower(), out var command))
             {
-                Console.WriteLine($"Executing command {command.Name}");
                 await command.ExecuteAsync(this, args.Skip(1).ToArray());
             }
             else
@@ -61,6 +57,15 @@ namespace Dr.TrainsCli
             }
         }
 
+
+        private void ExecuteCommand(Task command, string[] args)
+        {
+            while( ! command.IsCompleted )
+            {
+                Console.Write("...");
+                Thread.Sleep(100);
+            }
+        }
 
         private void Initialise()
         {
