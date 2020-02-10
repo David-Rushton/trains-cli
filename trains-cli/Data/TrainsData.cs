@@ -49,10 +49,31 @@ namespace Dr.TrainsCli.Data
             {
                 $"calling_at={toStationCode}"
             };
-            return await GetRestRequest<DeparturesMessage>($"train/station/{fromStationCode}/live.json", searchTerms);
+            var req =  await GetRestRequest<DeparturesMessage>($"train/station/{fromStationCode}/live.json", searchTerms);
+
+
+            foreach(var departure in req.Departures!["all"])
+            {
+                if(departure.Timetable!["id"] != null)
+                {
+                    departure.Route = await MakeRawRequest<RouteMessage>(departure.Timetable["id"]);
+                }
+            }
+
+
+            return req;
+        }
+
+        public async Task<T> MakeRawRequest<T>(string uri)
+        {
+            var resp = await _httpClient.GetAsync(uri);
+            resp.EnsureSuccessStatusCode();
+            using var repsStream = await resp.Content.ReadAsStreamAsync();
+            return await JsonSerializer.DeserializeAsync<T>(repsStream);
         }
 
 
+        // TODO: rename xxx
         private async Task<T> GetRestRequest<T>(string xxx, string[] searchTerms)
         {
             var url = $"{xxx}?app_id={_config.AppId}&app_key={_config.AppKey}&{string.Join('&', searchTerms)}";

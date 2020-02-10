@@ -46,6 +46,13 @@ namespace Dr.TrainsCli.Data
             [JsonPropertyName("status")]
             public string? Status { get; set; }
 
+            [JsonPropertyName("service_timetable")]
+            public Dictionary<string, string>? Timetable { get; set; }
+
+            [JsonIgnore]
+            public RouteMessage? Route {  get; set; }
+
+
             public override string ToString()
             {
                 return @$"
@@ -53,6 +60,8 @@ namespace Dr.TrainsCli.Data
     To: {TerminatingAt ?? "Unknown"}
     Status: {Status ?? "Unknown"}
     Platfrom: {Platform ?? "Unknown"}
+    RouteAPI: {Timetable!["id"] ?? "Unknown" }
+    Route: {Route?.ToString() ?? "Unknown" }
     Scheduled Departure: {ScheduledDepartureTime ?? "Unknown"}
     Expected Departure: {ExpectedDepartureTime ?? "Unknown"}
     Departing In (mins): {ExpectedDepartureInMinutes?.ToString() ?? "Unknown"}
