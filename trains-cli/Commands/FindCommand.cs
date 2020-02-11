@@ -20,6 +20,8 @@ namespace Dr.TrainsCli.Commands
                     var stations =  await app.TrainsData.FindStationAsync(arg);
                     Console.WriteLine(stations);
                 }
+
+                return;
             }
 
             throw new Exception("Expected 1 or more search terms");
