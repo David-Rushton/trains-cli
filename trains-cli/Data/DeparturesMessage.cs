@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -8,6 +9,7 @@ namespace Dr.TrainsCli.Data
     public class DeparturesMessage
     {
         #pragma warning disable CS8618
+        [NotNull()]
         [JsonPropertyName("departures")]
         public Dictionary<string, List<DepartureDetails>> Departures { get; set; }
         #pragma warning restore CS8618
@@ -39,6 +41,7 @@ namespace Dr.TrainsCli.Data
             [JsonPropertyName("status")]
             public string? Status { get; set; }
 
+            [NotNull]
             [JsonPropertyName("service_timetable")]
             public Dictionary<string, string>? RouteUrl { get; set; }
 
@@ -54,7 +57,7 @@ namespace Dr.TrainsCli.Data
     Status: {Status ?? "Unknown"}
     Platfrom: {Platform ?? "Unknown"}
     RouteAPI: {RouteUrl!["id"] ?? "Unknown" }
-    Route: {Route!.Stops!.ToString() ?? "Unknown" }
+    Route: {Route?.ToString() ?? "Unknown" }
     Scheduled Departure: {ScheduledDepartureTime ?? "Unknown"}
     Expected Departure: {ExpectedDepartureTime ?? "Unknown"}
     Departing In (mins): {ExpectedDepartureInMinutes?.ToString() ?? "Unknown"}

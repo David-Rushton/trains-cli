@@ -26,6 +26,10 @@ namespace Dr.TrainsCli.Data
             [JsonPropertyName("station_name")]
             public string? StationName { get; set; }
 
+
+            [JsonPropertyName("station_code")]
+            public string? StationCode { get; set; }
+
             [JsonPropertyName("aimed_arrival_time")]
             public string? ScheduledArrivalTime { get; set; }
 

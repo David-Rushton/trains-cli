@@ -52,11 +52,16 @@ namespace Dr.TrainsCli.Data
                 }
             );
 
+            // Add route information, via separate API call on each returned departure
             if(departures.Departures.ContainsKey("all"))
             {
-                departures.Departures["all"]
-                    .Where(d => d.RouteUrl!["id"] != null)
-                    .Select(async d => d.Route = await GetRestRequest<RouteMessage>(d.RouteUrl!["id"]));
+                Task.WaitAll
+                (
+                    departures.Departures["all"]
+                        .Where(d => d.RouteUrl.ContainsKey("id"))
+                        .Select(async d => d.Route = await GetRestRequest<RouteMessage>(d.RouteUrl["id"]))
+                        .ToArray()
+                );
             }
 
             return departures;
