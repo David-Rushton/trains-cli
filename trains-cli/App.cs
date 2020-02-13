@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Dr.TrainsCli.Commands;
 using Dr.TrainsCli.Configuration;
 using Dr.TrainsCli.Data;
+using Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli
@@ -19,9 +20,10 @@ namespace Dr.TrainsCli
         readonly Dictionary<string, Command> _commands = new Dictionary<string, Command>();
 
 
-        internal App(Config config, TrainsData trainsData)
+        internal App(Config config, BaseView view, TrainsData trainsData)
         {
             Config = config;
+            View = view;
             TrainsData = trainsData;
         }
 
@@ -29,6 +31,8 @@ namespace Dr.TrainsCli
         public TrainsData TrainsData { get; internal set; }
 
         public Config Config { get; internal set; }
+
+        public BaseView View { get; internal set; }
 
 
         public void RegisterCommand(Command command)

@@ -1,11 +1,18 @@
 using System;
 using System.Threading.Tasks;
+using Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli.Commands
 {
     public class FindCommand : Command
     {
+        internal readonly StationView _stationView;
+
+        public FindCommand(StationView stationView)
+            => (_stationView) = (stationView);
+
+
         public override string Name => "find";
 
         public override string HelpMessage => "find a station code";
@@ -18,7 +25,7 @@ namespace Dr.TrainsCli.Commands
                 foreach(var arg in args)
                 {
                     var stations =  await app.TrainsData.FindStationAsync(arg);
-                    Console.WriteLine(stations);
+                    _stationView.WriteLine(stations.ToString());
                 }
 
                 return;

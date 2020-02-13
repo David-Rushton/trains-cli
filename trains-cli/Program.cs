@@ -8,6 +8,7 @@ using Dr.TrainsCli.Commands;
 using Dr.TrainsCli.Configuration;
 using Dr.TrainsCli.Data;
 using Dr.TrainsCli.Extensions;
+using Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli
@@ -32,11 +33,12 @@ namespace Dr.TrainsCli
         {
             var config = await ConfigFactory.GetConfigAsync();
             var trainsData = new TrainsData(config);
-            var app = new App(config, trainsData);
+            var view = new BaseView();
+            var app = new App(config, view, trainsData);
 
-            app.RegisterCommand(new ConfigCommand());
-            app.RegisterCommand(new FindCommand());
-            app.RegisterCommand(new LiveDeparturesCommand());
+            app.RegisterCommand(new ConfigCommand(view));;
+            app.RegisterCommand(new FindCommand(new StationView()));
+            app.RegisterCommand(new LiveDeparturesCommand(new DeparturesView()));
             return app;
         }
     }

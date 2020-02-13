@@ -2,12 +2,19 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Extensions;
+using Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli.Commands
 {
     public class ConfigCommand : Command
     {
+        private readonly BaseView _view;
+
+        public ConfigCommand(BaseView view)
+            => (_view) = (view);
+
+
         public override string Name => "config";
 
         public override string HelpMessage => throw new NotImplementedException();
@@ -17,7 +24,11 @@ namespace Dr.TrainsCli.Commands
         {
             if(args.ContainsOption("--edit", "-e"))
             {
-                await Task.Run(() => EditConfigFie(app.Config?.ConfigFilePath ?? Configuration.ConfigFactory.ConfigFilePath));
+                await Task.Run
+                (
+                    () =>
+                    EditConfigFie(app.Config?.ConfigFilePath ?? Configuration.ConfigFactory.ConfigFilePath)
+                );
                 return;
             }
 
@@ -28,7 +39,7 @@ namespace Dr.TrainsCli.Commands
 
         private void EditConfigFie(string configFilePath)
         {
-            Console.WriteLine("\n\tOpening config file...\n");
+            _view.WriteLine("\n\tOpening config file...\n");
             new Process
             {
                 StartInfo = new ProcessStartInfo(configFilePath)
