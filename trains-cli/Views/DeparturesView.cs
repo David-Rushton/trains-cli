@@ -25,8 +25,8 @@ namespace Dr.TrainsCli.Views
             foreach(var departure in message.Departures["all"])
             {
                 var sb = new StringBuilder();
-                sb.Append($"{departure.ExpectedDepartureTime}: ");
-                sb.Append($"{departure.DepartingFrom} to ");
+                sb.Append($"{departure.ExpectedDepartureTime}: To ");
+                // sb.Append($"{departure.DepartingFrom} to ");
                 sb.AppendLine(departure.TerminatingAt);
 
                 sb.Append($"Departing in {departure.ExpectedDepartureInMinutes} mins ");
@@ -55,7 +55,7 @@ namespace Dr.TrainsCli.Views
                 bool output = false;
                 foreach(var stop in route!.Stops!)
                 {
-                    if(output == false && stop.StationCode.ToLower() == fromStationCode.ToLower())
+                    if(output == false && stop!.StationCode!.ToLower() == fromStationCode.ToLower())
                     {
                         output = true;
                     }
@@ -66,7 +66,7 @@ namespace Dr.TrainsCli.Views
                         text.Append($" ({stop.ExpectedArrivalTime}) ");
                     }
 
-                    if(output == true && stop.StationCode.ToLower() == toStationCode.ToLower())
+                    if(output == true && stop!.StationCode!.ToLower() == toStationCode.ToLower())
                     {
                         return;
                     }
