@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Dr.TrainsCli.Extensions;
@@ -33,14 +34,23 @@ namespace Dr.TrainsCli.Views
 
             foreach(char character in message)
             {
-                var currentCursonPosition = ConsoleEx.GetBookmark();
+                if( Console.CursorLeft >= (Console.WindowWidth - 1))
+                {
+                    Console.WriteLine();
+                }
+
+                // var currentCursonPosition = ConsoleEx.GetBookmark();
                 Console.ForegroundColor = trace;
                 Console.Write(character);
                 Thread.Sleep(20);
 
-                ConsoleEx.GoToBookmark(currentCursonPosition);
-                Console.ForegroundColor = final;
-                Console.Write(character);
+                if( ! (character == '\n' || character == '\r' || character == '\t') )
+                {
+
+                    // ConsoleEx.GoToBookmark(currentCursonPosition);
+                    Console.ForegroundColor = final;
+                    Console.Write($"\b{character}");
+                }
             }
 
             Console.ForegroundColor = originalForegroundColor;

@@ -45,7 +45,7 @@
             "program": "${workspaceFolder}/trains-cli/bin/Debug/netcoreapp3.0/trains-cli.dll",
             "args": [
                 "live",
-                "fst",
+                "bso",
                 "soe"
             ],
             "cwd": "${workspaceFolder}/trains-cli",

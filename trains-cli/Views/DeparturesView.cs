@@ -8,19 +8,20 @@ namespace Dr.TrainsCli.Views
 {
     public class DeparturesView: BaseView
     {
-        public async Task RenderAsync(DeparturesMessage message, string fromStationCode, string toStationCode)
+        public async Task RenderAsync(DeparturesMessage message, string fromStationCode, string toStationCode, int firstResults)
         {
-            await Task.Run(() => Render(message, fromStationCode, toStationCode));
+            await Task.Run(() => Render(message, fromStationCode, toStationCode, firstResults));
         }
 
 
-        private void Render(DeparturesMessage message, string fromStationCode, string toStationCode)
+        private void Render(DeparturesMessage message, string fromStationCode, string toStationCode, int firstResults)
         {
             if( ! message.Departures.ContainsKey("all") )
             {
                 throw new Exception("Departure times not available");
             }
 
+            int resultsReturned = 0;
             foreach(var departure in message.Departures["all"])
             {
                 var sb = new StringBuilder();
@@ -35,6 +36,12 @@ namespace Dr.TrainsCli.Views
                 sb.AppendLine();
 
                 this.WriteLine(sb);
+
+                resultsReturned++;
+                if(resultsReturned >= firstResults)
+                {
+                    return;
+                }
             }
 
 
@@ -48,15 +55,18 @@ namespace Dr.TrainsCli.Views
                 bool output = false;
                 foreach(var stop in route!.Stops!)
                 {
-                    if(output == false && stop.StationCode == fromStationCode)
+                    if(output == false && stop.StationCode.ToLower() == fromStationCode.ToLower())
                     {
                         output = true;
                     }
 
-                    text.Append(stop.StationName);
-                    text.Append($" ({stop.ExpectedArrivalTime}) ");
+                    if(output == true)
+                    {
+                        text.Append(stop.StationName);
+                        text.Append($" ({stop.ExpectedArrivalTime}) ");
+                    }
 
-                    if(output == true && stop.StationCode == toStationCode)
+                    if(output == true && stop.StationCode.ToLower() == toStationCode.ToLower())
                     {
                         return;
                     }

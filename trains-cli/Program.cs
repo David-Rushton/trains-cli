@@ -33,12 +33,12 @@ namespace Dr.TrainsCli
         {
             var config = await ConfigFactory.GetConfigAsync();
             var trainsData = new TrainsData(config);
-            var view = new BaseView();
-            var app = new App(config, view, trainsData);
+            var views = new Views.Views(new BaseView(), new DeparturesView(), new StationView());
+            var app = new App(config, views, trainsData);
 
-            app.RegisterCommand(new ConfigCommand(view));;
-            app.RegisterCommand(new FindCommand(new StationView()));
-            app.RegisterCommand(new LiveDeparturesCommand(new DeparturesView()));
+            app.RegisterCommand(new ConfigCommand());
+            app.RegisterCommand(new FindCommand());
+            app.RegisterCommand(new LiveDeparturesCommand());
             return app;
         }
     }

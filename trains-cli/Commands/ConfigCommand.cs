@@ -9,12 +9,6 @@ namespace Dr.TrainsCli.Commands
 {
     public class ConfigCommand : Command
     {
-        private readonly BaseView _view;
-
-        public ConfigCommand(BaseView view)
-            => (_view) = (view);
-
-
         public override string Name => "config";
 
         public override string HelpMessage => throw new NotImplementedException();
@@ -34,19 +28,19 @@ namespace Dr.TrainsCli.Commands
 
             // TODO: Show help
             throw new Exception($"Config option(s) not supported: {string.Join(", ", args)}");
-        }
 
 
-        private void EditConfigFie(string configFilePath)
-        {
-            _view.WriteLine("\n\tOpening config file...\n");
-            new Process
+            void EditConfigFie(string configFilePath)
             {
-                StartInfo = new ProcessStartInfo(configFilePath)
+                app.Views.BaseView.WriteLine("\n\tOpening config file...\n");
+                new Process
                 {
-                    UseShellExecute = true
-                }
-            }.Start();
+                    StartInfo = new ProcessStartInfo(configFilePath)
+                    {
+                        UseShellExecute = true
+                    }
+                }.Start();
+            }
         }
     }
 }
