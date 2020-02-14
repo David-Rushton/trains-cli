@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Data;
@@ -21,56 +22,41 @@ namespace Dr.TrainsCli.Views
                 throw new Exception("Departure times not available");
             }
 
-            int resultsReturned = 0;
-            foreach(var departure in message.Departures["all"])
+            this.WriteLine("Live Departures");
+            this.WriteLine("---------------\n");
+
+            var departures = message.Departures["all"].Take(firstResults);
+            foreach(var departure in departures)
             {
                 var sb = new StringBuilder();
                 sb.Append($"{departure.ExpectedDepartureTime}: To ");
-                // sb.Append($"{departure.DepartingFrom} to ");
                 sb.AppendLine(departure.TerminatingAt);
-
                 sb.Append($"Departing in {departure.ExpectedDepartureInMinutes} mins ");
                 sb.AppendLine($"from platform #{departure.Platform}");
-
-                AddRoute(sb, departure.Route);
+                AddRouteTimetable(sb, departure.Route, fromStationCode, toStationCode);
                 sb.AppendLine();
 
                 this.WriteLine(sb);
+            }
+        }
 
-                resultsReturned++;
-                if(resultsReturned >= firstResults)
-                {
-                    return;
-                }
+        private void AddRouteTimetable(StringBuilder text, RouteMessage? route, string fromStationCode, string toStationCode)
+        {
+            var startIndex = route?.Stops?.FindIndex(s => s.StationCode == fromStationCode.ToUpper()) ?? 0;
+            var endIndex = route?.Stops?.FindIndex(s => s.StationCode == toStationCode.ToUpper()) ?? 0;
+
+            // Null check here is added to help the compiler identify that
+            // stops are not null
+            if(startIndex > 0 && startIndex < endIndex || route?.Stops == null)
+            {
+                text.Append("Cannot download timetable");
+                return;
             }
 
-
-            void AddRoute(StringBuilder text, RouteMessage? route)
+            for(var stopIndex = startIndex; stopIndex < endIndex; stopIndex++)
             {
-                if(route == null || route.Stops == null)
-                {
-                    text.AppendLine("Timetable not availble");
-                }
-
-                bool output = false;
-                foreach(var stop in route!.Stops!)
-                {
-                    if(output == false && stop!.StationCode!.ToLower() == fromStationCode.ToLower())
-                    {
-                        output = true;
-                    }
-
-                    if(output == true)
-                    {
-                        text.Append(stop.StationName);
-                        text.Append($" ({stop.ExpectedArrivalTime}) ");
-                    }
-
-                    if(output == true && stop!.StationCode!.ToLower() == toStationCode.ToLower())
-                    {
-                        return;
-                    }
-                }
+                text.Append(route.Stops[stopIndex].StationName);
+                text.Append($" ({route.Stops[stopIndex].ExpectedArrivalTime}) ");
             }
         }
     }
