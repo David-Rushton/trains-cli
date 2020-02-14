@@ -9,7 +9,22 @@ namespace Dr.TrainsCli.Views
     {
         public async Task RenderAsync(StationMessage message)
         {
-            await Task.Run(() => Console.WriteLine(message));
+            var output = "Station Search\n--------------\n";
+            var stations = message.Stations.Count;
+
+            if(stations == 0)
+            {
+                output = "No stations found";
+            }
+            else
+            {
+                foreach(var station in message.Stations)
+                {
+                    output += $"{station.StationName} ({station.StationCode})\n";
+                }
+            }
+
+            await Task.Run(() => this.WriteLine(output));
         }
     }
 }

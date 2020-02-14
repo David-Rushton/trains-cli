@@ -19,7 +19,7 @@ namespace Dr.TrainsCli.Commands
                 foreach(var arg in args)
                 {
                     var stations =  await app.TrainsData.FindStationAsync(arg);
-                    app.Views.StationView.WriteLine(stations.ToString());
+                    await app.Views.StationView.RenderAsync(stations);
                 }
 
                 return;
