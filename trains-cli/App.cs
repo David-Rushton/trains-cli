@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Commands;
@@ -21,6 +22,8 @@ namespace Dr.TrainsCli
             Config = config;
             Views = views;
             TrainsData = trainsData;
+
+            ExitIfNoApiKey();
         }
 
 
@@ -57,25 +60,18 @@ namespace Dr.TrainsCli
             }
         }
 
-
-        private void ExecuteCommand(Task command, string[] args)
+        private void ExitIfNoApiKey()
         {
-            while( ! command.IsCompleted )
+            if(Config.AppId == null || Config.AppKey == null)
             {
-                Console.Write("...");
-                Thread.Sleep(100);
-            }
-        }
+                var sb = new StringBuilder();
+                sb.AppendLine("An API key is required to use this service");
+                sb.AppendLine("Visit https://developer.transportapi.com to register");
+                sb.AppendLine("Then update the config file to continue:");
+                sb.AppendLine("  trains-cli config --edit");
 
-        private void Initialise()
-        {
-            if(Config.AppId == null || Config.AppKey == null) {
-                throw new Exception(@"
-    A valid API key is required to use this service.
-    Visit https://developer.transportapi.com to register.
-    Update the config file to continue:
-        trains-cli config --edit
-");
+                Views.BaseView.WriteError(sb);
+                Environment.Exit(1);
             }
         }
     }

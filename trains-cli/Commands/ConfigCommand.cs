@@ -21,7 +21,7 @@ namespace Dr.TrainsCli.Commands
                 await Task.Run
                 (
                     () =>
-                    EditConfigFie(app.Config.ConfigFilePath
+                    EditConfigFie(app, app.Config.ConfigFilePath)
                 );
                 return;
             }
@@ -30,7 +30,7 @@ namespace Dr.TrainsCli.Commands
             throw new Exception($"Config option(s) not supported: {string.Join(", ", args)}");
         }
 
-        private void EditConfigFie(string configFilePath)
+        private void EditConfigFie(App app, string configFilePath)
         {
             app.Views.BaseView.WriteLine("Opening config file...\n");
             new Process
