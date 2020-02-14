@@ -9,6 +9,10 @@ namespace Dr.TrainsCli.Views
 {
     public class BaseView
     {
+        internal BaseView()
+        { }
+
+
         public void WriteLine(string message)
             => WriteToConsole($"{message}\n");
 
