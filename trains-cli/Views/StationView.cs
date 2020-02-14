@@ -9,7 +9,7 @@ namespace Dr.TrainsCli.Views
     {
         public async Task RenderAsync(StationMessage message)
         {
-            var output = "Station Search\n--------------\n";
+            var output = "Station Search\n--------------\n\n";
             var stations = message.Stations.Count;
 
             if(stations == 0)
