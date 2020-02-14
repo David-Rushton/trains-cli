@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -38,7 +39,7 @@ namespace Dr.TrainsCli
         {
             if(!(_commands.TryAdd(command.Name.ToLower(), command)))
             {
-                throw new Exception($"Cannot add command.  Name already registered: {command.Name}");
+                Debug.Assert(false, "$Cannot add command.  Name already registered: {command.Name}");
             }
         }
 
