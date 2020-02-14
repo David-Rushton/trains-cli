@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using Dr.TrainsCli.Extensions;
 
 
 namespace Dr.TrainsCli.Views

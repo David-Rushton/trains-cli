@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Extensions;
-using Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli.Commands

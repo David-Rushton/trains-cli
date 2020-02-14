@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Dr.TrainsCli.Commands;
 using Dr.TrainsCli.Configuration;
 using Dr.TrainsCli.Data;
-using Dr.TrainsCli.Extensions;
 using Dr.TrainsCli.Views;
 
 

@@ -1,8 +1,4 @@
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli.Commands
