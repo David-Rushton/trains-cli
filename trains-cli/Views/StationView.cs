@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Data;
 
@@ -11,6 +12,7 @@ namespace Dr.TrainsCli.Views
         {
             var output = "Station Search\n--------------\n\n";
             var stations = message.Stations.Count;
+            var maxLen = message.Stations.Max(s => s?.StationName?.Length ?? 0);
 
             if(stations == 0)
             {
@@ -18,10 +20,15 @@ namespace Dr.TrainsCli.Views
             }
             else
             {
+                maxLen +=  10;
+                output += $"+------+-----".PadRight(maxLen, '-') + "+\n";
+                output += $"| Code | Name".PadRight(maxLen, ' ') + "|\n";
+                output += $"+------+-----".PadRight(maxLen, '-') + "+\n";
                 foreach(var station in message.Stations)
                 {
-                    output += $"{station.StationName} ({station.StationCode})\n";
+                    output += $"| {station.StationCode}  | {station.StationName}".PadRight(maxLen, ' ') + "|\n";
                 }
+                output += $"+------+-----".PadRight(maxLen, '-') + "+\n";
             }
 
             await Task.Run(() => this.WriteLine(output));
