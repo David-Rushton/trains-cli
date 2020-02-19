@@ -5,7 +5,39 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Debug config command",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/trains-cli/bin/Debug/netcoreapp3.0/trains-cli.dll",
+            "args": [
+                "config",
+                "--edit"
+            ],
+            "cwd": "${workspaceFolder}/trains-cli",
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug find command",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/trains-cli/bin/Debug/netcoreapp3.0/trains-cli.dll",
+            "args": [
+                "find",
+                "fenchurch"
+            ],
+            "cwd": "${workspaceFolder}/trains-cli",
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug live command",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -13,7 +45,8 @@
             "program": "${workspaceFolder}/trains-cli/bin/Debug/netcoreapp3.0/trains-cli.dll",
             "args": [
                 "live",
-                "southend"
+                "fst",
+                "soe"
             ],
             "cwd": "${workspaceFolder}/trains-cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console

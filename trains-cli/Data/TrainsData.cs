@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -30,37 +31,58 @@ namespace Dr.TrainsCli.Data
 
 
         public async Task<StationMessage> FindStationAsync(string searchFor)
-        {
-            var url = $"places.json?query={searchFor}&type=train_station&app_id={_config.AppId}&app_key={_config.AppKey}";
-            var response = await _httpClient.GetAsync(url);
-
-            response.EnsureSuccessStatusCode();
-            using var responseSteam = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<StationMessage>(responseSteam);
-        }
+            => await GetRestRequest<StationMessage>
+            (
+                "places.json",
+                new string[]
+                {
+                    $"query={searchFor}",
+                    "type=train_station"
+                }
+            );
 
         public async Task<DeparturesMessage> GetDepartures(string fromStationCode, string toStationCode)
         {
-            // train/station/{ *** station_code *** }/live.json    *** FST ***
-            // calling_at=SOE
+            var departures = await GetRestRequest<DeparturesMessage>
+            (
+                $"train/station/{fromStationCode}/live.json",
+                new string[]
+                {
+                    $"calling_at={toStationCode}"
+                }
+            );
 
-
-            var searchTerms = new string[]
+            // Add route information, via separate API call on each returned departure
+            if(departures.Departures.ContainsKey("all"))
             {
-                $"calling_at={toStationCode}"
-            };
-            return await GetRestRequest<DeparturesMessage>($"train/station/{fromStationCode}/live.json", searchTerms);
+                Task.WaitAll
+                (
+                    departures.Departures["all"]
+                        .Where(d => d.RouteUrl.ContainsKey("id"))
+                        .Select(async d => d.Route = await GetRestRequest<RouteMessage>(d.RouteUrl["id"]))
+                        .ToArray()
+                );
+            }
+
+            return departures;
         }
 
 
-        private async Task<T> GetRestRequest<T>(string xxx, string[] searchTerms)
+        private async Task<T> GetRestRequest<T>(string url)
         {
-            var url = $"{xxx}?app_id={_config.AppId}&app_key={_config.AppKey}&{string.Join('&', searchTerms)}";
             var response = await _httpClient.GetAsync(url);
 
             response.EnsureSuccessStatusCode();
-            using var responseSteam = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<T>(responseSteam);
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            return await JsonSerializer.DeserializeAsync<T>(responseStream);
+        }
+
+        private async Task<T> GetRestRequest<T>(string apiPath, string[] searchTerms)
+        {
+            var url = $"{apiPath}?app_id={_config.AppId}&app_key={_config.AppKey}&{GetQueryString()}";
+            return await GetRestRequest<T>(url);
+
+            string GetQueryString() => string.Join('&', searchTerms);
         }
     }
 }

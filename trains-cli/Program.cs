@@ -16,16 +16,16 @@ namespace Dr.TrainsCli
     {
         static async Task Main(string[] args)
         {
-            try
-            {
+            // try
+            // {
                 var app = await bootstrap();
                 await app.ExecuteAsync(args);
-            }
-            catch (Exception e)
-            {
-                // TODO: Make pretty and colourful.
-                Console.WriteLine($"!!!\n{e.Message}\n!!!");
-            }
+            // }
+            // catch (Exception e)
+            // {
+                // // TODO: Make pretty and colourful.
+                // Console.WriteLine($"!!!\n{e.Message}\n!!!");
+            // }
         }
 
         private static async Task<App> bootstrap()

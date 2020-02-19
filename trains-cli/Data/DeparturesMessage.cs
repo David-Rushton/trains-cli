@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -8,19 +9,13 @@ namespace Dr.TrainsCli.Data
     public class DeparturesMessage
     {
         #pragma warning disable CS8618
+        [NotNull()]
         [JsonPropertyName("departures")]
         public Dictionary<string, List<DepartureDetails>> Departures { get; set; }
         #pragma warning restore CS8618
 
         public override string ToString()
-        {
-            if(Departures.ContainsKey("all"))
-            {
-                return string.Join("\n", Departures["all"].Select(d => d.ToString()));
-            }
-
-            return "Departure information not availble";
-        }
+            => string.Join("\n", Departures!["all"].Select(d => d.ToString()));
 
 
         public class DepartureDetails
@@ -46,12 +41,22 @@ namespace Dr.TrainsCli.Data
             [JsonPropertyName("status")]
             public string? Status { get; set; }
 
+            [NotNull]
+            [JsonPropertyName("service_timetable")]
+            public Dictionary<string, string>? RouteUrl { get; set; }
+
+            [JsonIgnore]
+            public RouteMessage? Route {  get; set; }
+
+
             public override string ToString()
             {
                 return @$"
     From: {DepartingFrom ?? "Unknown"}
     To: {TerminatingAt ?? "Unknown"}
     Platfrom: {Platform ?? "Unknown"}
+    RouteAPI: {RouteUrl!["id"] ?? "Unknown" }
+    Route: {Route?.ToString() ?? "Unknown" }
     Scheduled Departure: {ScheduledDepartureTime ?? "Unknown"}
     Expected Departure: {ExpectedDepartureTime ?? "Unknown"}
     Departing In (mins): {ExpectedDepartureInMinutes?.ToString() ?? "Unknown"}
