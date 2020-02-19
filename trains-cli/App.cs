@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Commands;
 using Dr.TrainsCli.Configuration;
@@ -21,6 +22,8 @@ namespace Dr.TrainsCli
             Config = config;
             Views = views;
             TrainsData = trainsData;
+
+            ExitIfNoApiKey();
         }
 
 
@@ -35,16 +38,16 @@ namespace Dr.TrainsCli
         {
             if(!(_commands.TryAdd(command.Name.ToLower(), command)))
             {
-                throw new Exception($"Cannot add command.  Name already registered: {command.Name}");
+                Debug.Assert(false, "$Cannot add command.  Name already registered: {command.Name}");
             }
         }
 
+        // TODO: ugly
         public async Task ExecuteAsync(string[] args)
         {
             if(args.Length == 0)
             {
-                // show usage
-                throw new NotImplementedException();
+                ShowUsageAndExit(1);
             }
 
             if(_commands.TryGetValue(args[0].ToLower(), out var command))
@@ -53,29 +56,44 @@ namespace Dr.TrainsCli
             }
             else
             {
-                throw new Exception($"Command not recognised: {args[0]}");
+                // TODO: Show usage
+                Views.BaseView.WriteError($"Command {args[0]} not recognised");
+                Environment.Exit(1);
             }
         }
 
 
-        private void ExecuteCommand(Task command, string[] args)
+        private void ShowUsageAndExit(int exitCode)
         {
-            while( ! command.IsCompleted )
+            var sb = new StringBuilder();
+            sb.AppendLine("trains-cli");
+            sb.AppendLine("Query station codes and departure times from the cli");
+            sb.AppendLine();
+            sb.AppendLine("Usage:");
+            sb.AppendLine("trains-cli [command] [options]");
+            sb.AppendLine();
+            sb.AppendLine("Commands");
+            sb.AppendLine();
+            foreach(var cmd in _commands)
             {
-                Console.Write("...");
-                Thread.Sleep(100);
+                sb.AppendLine(cmd.Value.HelpMessage);
             }
+
+            Views.BaseView.WriteLine(sb);
         }
 
-        private void Initialise()
+        private void ExitIfNoApiKey()
         {
-            if(Config.AppId == null || Config.AppKey == null) {
-                throw new Exception(@"
-    A valid API key is required to use this service.
-    Visit https://developer.transportapi.com to register.
-    Update the config file to continue:
-        trains-cli config --edit
-");
+            if(Config.AppId == null || Config.AppKey == null)
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine("An API key is required to use this service");
+                sb.AppendLine("Visit https://developer.transportapi.com to register");
+                sb.AppendLine("Then update the config file to continue:");
+                sb.AppendLine("  trains-cli config --edit");
+
+                Views.BaseView.WriteError(sb);
+                Environment.Exit(1);
             }
         }
     }

@@ -29,7 +29,7 @@
             "program": "${workspaceFolder}/trains-cli/bin/Debug/netcoreapp3.0/trains-cli.dll",
             "args": [
                 "find",
-                "fenchurch"
+                "xray"
             ],
             "cwd": "${workspaceFolder}/trains-cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console

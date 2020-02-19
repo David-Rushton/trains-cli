@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Data;
 
@@ -14,15 +14,20 @@ namespace Dr.TrainsCli.Views
 
             if(stations == 0)
             {
-                output = "No stations found";
+                await Task.Run(() => this.WriteError("No stations found"));
+                return;
             }
-            else
+
+
+            var maxLen = message.Stations.Max(s => s?.StationName?.Length ?? 0) + 10;
+            output += $"+------+-----".PadRight(maxLen, '-') + "+\n";
+            output += $"| Code | Name".PadRight(maxLen, ' ') + "|\n";
+            output += $"+------+-----".PadRight(maxLen, '-') + "+\n";
+            foreach(var station in message.Stations)
             {
-                foreach(var station in message.Stations)
-                {
-                    output += $"{station.StationName} ({station.StationCode})\n";
-                }
+                output += $"| {station.StationCode}  | {station.StationName}".PadRight(maxLen, ' ') + "|\n";
             }
+            output += $"+------+-----".PadRight(maxLen, '-') + "+\n";
 
             await Task.Run(() => this.WriteLine(output));
         }

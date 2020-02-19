@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Dr.TrainsCli.Commands;
 using Dr.TrainsCli.Configuration;
 using Dr.TrainsCli.Data;
-using Dr.TrainsCli.Extensions;
 using Dr.TrainsCli.Views;
 
 
@@ -17,17 +16,17 @@ namespace Dr.TrainsCli
     {
         static async Task Main(string[] args)
         {
-            // try
-            // {
+            try
+            {
                 var app = await bootstrap();
                 await app.ExecuteAsync(args);
-            // }
-            // catch (Exception e)
-            // {
-                // // TODO: Make pretty and colourful.
-                // Console.WriteLine($"!!!\n{e.Message}\n!!!");
-            // }
+            }
+            catch (Exception e)
+            {
+                WriteError(e.Message);
+            }
         }
+
 
         private static async Task<App> bootstrap()
         {
@@ -40,6 +39,14 @@ namespace Dr.TrainsCli
             app.RegisterCommand(new FindCommand());
             app.RegisterCommand(new LiveDeparturesCommand());
             return app;
+        }
+
+        private static void WriteError(string message)
+        {
+            var originalColour = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine(message);
+            Console.ForegroundColor = originalColour;
         }
     }
 }

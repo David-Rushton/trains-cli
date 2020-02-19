@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Extensions;
-using Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli.Commands
@@ -11,7 +10,7 @@ namespace Dr.TrainsCli.Commands
     {
         public override string Name => "config";
 
-        public override string HelpMessage => throw new NotImplementedException();
+        public override string HelpMessage => "Config\t--edit | -e\tEdit the configuration file";
 
 
         public override async Task ExecuteAsync(App app, string[] args)
@@ -21,7 +20,7 @@ namespace Dr.TrainsCli.Commands
                 await Task.Run
                 (
                     () =>
-                    EditConfigFie(app.Config.ConfigFilePath
+                    EditConfigFie(app, app.Config.ConfigFilePath)
                 );
                 return;
             }
@@ -30,7 +29,7 @@ namespace Dr.TrainsCli.Commands
             throw new Exception($"Config option(s) not supported: {string.Join(", ", args)}");
         }
 
-        private void EditConfigFie(string configFilePath)
+        private void EditConfigFie(App app, string configFilePath)
         {
             app.Views.BaseView.WriteLine("Opening config file...\n");
             new Process

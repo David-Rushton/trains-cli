@@ -29,9 +29,10 @@ namespace Dr.TrainsCli.Views
             foreach(var departure in departures)
             {
                 var sb = new StringBuilder();
-                sb.Append($"{departure.ExpectedDepartureTime}: To ");
+                sb.Append($"The {departure.ExpectedDepartureTime} to ");
                 sb.AppendLine(departure.TerminatingAt);
-                sb.Append($"Departing in {departure.ExpectedDepartureInMinutes} mins ");
+                sb.Append($"Departing in {departure.ExpectedDepartureInMinutes}");
+                sb.Append(departure.ExpectedDepartureInMinutes == 1 ? " minute ": " minutes ");
                 sb.AppendLine($"from platform #{departure.Platform}");
                 AddRouteTimetable(sb, departure.Route, fromStationCode, toStationCode);
                 sb.AppendLine();
@@ -44,20 +45,33 @@ namespace Dr.TrainsCli.Views
         {
             var startIndex = route?.Stops?.FindIndex(s => s.StationCode == fromStationCode.ToUpper()) ?? 0;
             var endIndex = route?.Stops?.FindIndex(s => s.StationCode == toStationCode.ToUpper()) ?? 0;
+            var stops = endIndex - startIndex - 1; // Remove boarding\alighting station from count of stops
 
             // Null check here is added to help the compiler identify that
             // stops are not null
-            if(startIndex > 0 && startIndex < endIndex || route?.Stops == null)
+            if(startIndex > 0 && startIndex <= endIndex || route?.Stops == null)
             {
                 text.Append("Cannot download timetable");
                 return;
             }
 
-            for(var stopIndex = startIndex; stopIndex < endIndex; stopIndex++)
+            switch(stops)
             {
-                text.Append(route.Stops[stopIndex].StationName);
-                text.Append($" ({route.Stops[stopIndex].ExpectedArrivalTime}) ");
+                case 0:
+                    text.AppendLine("Direct");
+                    break;
+
+                case 1:
+                    text.AppendLine("1 stop");
+                    break;
+
+                default:
+                    text.AppendLine($"{stops} stops");
+                    break;
             }
+
+            var destinationStop = route.Stops[endIndex];
+            text.AppendLine($"Arriving at {destinationStop.StationName} {route.Stops[endIndex].ExpectedArrivalTime}");
         }
     }
 }
