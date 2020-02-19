@@ -10,7 +10,7 @@ namespace Dr.TrainsCli.Commands
     {
         public override string Name => "config";
 
-        public override string HelpMessage => "Config [options]\nOptions\n--edit | -e\tEdit the configuration file";
+        public override string HelpMessage => "Config\t--edit | -e\tEdit the configuration file";
 
 
         public override async Task ExecuteAsync(App app, string[] args)

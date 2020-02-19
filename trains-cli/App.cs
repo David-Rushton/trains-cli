@@ -42,12 +42,12 @@ namespace Dr.TrainsCli
             }
         }
 
+        // TODO: ugly
         public async Task ExecuteAsync(string[] args)
         {
             if(args.Length == 0)
             {
-                // show usage
-                throw new NotImplementedException();
+                ShowUsageAndExit(1);
             }
 
             if(_commands.TryGetValue(args[0].ToLower(), out var command))
@@ -56,8 +56,30 @@ namespace Dr.TrainsCli
             }
             else
             {
-                throw new Exception($"Command not recognised: {args[0]}");
+                // TODO: Show usage
+                Views.BaseView.WriteError($"Command {args[0]} not recognised");
+                Environment.Exit(1);
             }
+        }
+
+
+        private void ShowUsageAndExit(int exitCode)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("trains-cli");
+            sb.AppendLine("Query station codes and departure times from the cli");
+            sb.AppendLine();
+            sb.AppendLine("Usage:");
+            sb.AppendLine("trains-cli [command] [options]");
+            sb.AppendLine();
+            sb.AppendLine("Commands");
+            sb.AppendLine();
+            foreach(var cmd in _commands)
+            {
+                sb.AppendLine(cmd.Value.HelpMessage);
+            }
+
+            Views.BaseView.WriteLine(sb);
         }
 
         private void ExitIfNoApiKey()
