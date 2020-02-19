@@ -51,7 +51,6 @@ namespace Dr.TrainsCli.Data
                 return @$"
     From: {DepartingFrom ?? "Unknown"}
     To: {TerminatingAt ?? "Unknown"}
-    Status: {Status ?? "Unknown"}
     Platfrom: {Platform ?? "Unknown"}
     Scheduled Departure: {ScheduledDepartureTime ?? "Unknown"}
     Expected Departure: {ExpectedDepartureTime ?? "Unknown"}
