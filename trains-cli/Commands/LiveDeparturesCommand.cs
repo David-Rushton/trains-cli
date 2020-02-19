@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli.Commands
@@ -16,11 +17,12 @@ namespace Dr.TrainsCli.Commands
             if(args.Length == 2)
             {
                 var departures =  await app.TrainsData.GetDepartures(args[0], args[1]);
-                Console.WriteLine(departures);
+                // Console.WriteLine(departures);
+                await app.Views.DeparturesView.RenderAsync(departures, args[0], args[1], 3);
                 return;
             }
 
-            throw new Exception("Usage: trains-cli live staton1 station2");
+            throw new Exception("Usage: trains-cli live station1 station2");
         }
     }
 }

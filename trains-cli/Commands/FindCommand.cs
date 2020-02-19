@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli.Commands
@@ -18,7 +19,7 @@ namespace Dr.TrainsCli.Commands
                 foreach(var arg in args)
                 {
                     var stations =  await app.TrainsData.FindStationAsync(arg);
-                    Console.WriteLine(stations);
+                    await app.Views.StationView.RenderAsync(stations);
                 }
 
                 return;

@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Dr.TrainsCli.Commands;
 using Dr.TrainsCli.Configuration;
 using Dr.TrainsCli.Data;
+using CliViews = Dr.TrainsCli.Views;
 
 
 namespace Dr.TrainsCli
@@ -19,16 +16,19 @@ namespace Dr.TrainsCli
         readonly Dictionary<string, Command> _commands = new Dictionary<string, Command>();
 
 
-        internal App(Config config, TrainsData trainsData)
+        internal App(Config config, CliViews.Views views, TrainsData trainsData)
         {
             Config = config;
+            Views = views;
             TrainsData = trainsData;
         }
 
 
-        public TrainsData TrainsData { get; internal set; }
+        public TrainsData TrainsData { get; private set; }
 
-        public Config Config { get; internal set; }
+        public Config Config { get; private set; }
+
+        public CliViews.Views Views { get; private set; }
 
 
         public void RegisterCommand(Command command)
